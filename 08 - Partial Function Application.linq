@@ -48,7 +48,7 @@ void Main()
             new Name("Jodie", "Whittaker")
         };
 
-    var filterNames = FilterPartial(names);
+    var filterNames = Filter(names);
 
     filterNames(n => n.First == "Peter" && n.Last == "Capaldi").Dump();
 }
