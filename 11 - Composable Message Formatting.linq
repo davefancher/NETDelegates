@@ -36,14 +36,6 @@ static MessageFormatterState Trim(MessageFormatterState state) =>
         state.LoggedValue,
         state.Message.Trim()
     );
-    
-//static Func<object, string> FormatMessage(params Func<MessageFormatterState, MessageFormatterState>[] formatters) =>
-//    value =>
-//        formatters
-//            .Aggregate(
-//                new MessageFormatterState(value, string.Empty),
-//                (state, formatter) => formatter(state))
-//            .Message;
 
 static Func<object, string> FormatMessage(Func<MessageFormatterState, MessageFormatterState> formatter) =>
     value =>
@@ -77,4 +69,3 @@ void Main()
     "Hello world".Map(warningFormatter).Dump();
     "Hello again".Map(debugFormatter).Dump();
 }
-
