@@ -3,40 +3,11 @@
 [DebuggerNonUserCode]
 public static class FunctionalExtensions
 {
-    public static TResult Map<TSource, TResult>(this TSource @this, Func<TSource, TResult> map) =>
-        map(@this);
+    public static TOut Map<TIn, TOut>(this TIn @this, Func<TIn, TOut> map) => map(@this);
 
     public static T Tee<T>(this T @this, Action<T> act)
     {
         act(@this);
-        return @this;
-    }
-
-    public static void Apply<T>(this T @this, Action<T> act) => act(@this);
-
-    public static TResult ConvertTo<TResult>(this object @this)
-    {
-        var convertible = @this as IConvertible;
-
-        return
-            convertible != null
-                ? (TResult)convertible.ToType(typeof(TResult), null)
-                : (TResult)@this;
-    }
-
-    public static T SetProperty<T, U>(
-        this T @this,
-        Expression<Func<T, U>> propertyExpression,
-        U value)
-    {
-        propertyExpression
-            .Body
-            .ConvertTo<MemberExpression>()
-            .Member
-            .Name
-            .Map(@this.GetType().GetProperty)
-            .SetValue(@this, value);
-
         return @this;
     }
 }
@@ -50,16 +21,20 @@ public static class Operators
 [DebuggerNonUserCode]
 public static class DelegateHelper
 {
-    private static Delegate __CombineMulticastDelegate(IEnumerable<MulticastDelegate> delegates) =>
+    private static Delegate CombineDelegates(IEnumerable<MulticastDelegate> delegates) =>
         delegates
-            .ToArray()
-            .Map(Delegate.Combine);
+            .Cast<Delegate>()
+            .Aggregate(Delegate.Combine);
 
     public static Action<T> Combine<T>(IEnumerable<Action<T>> delegates) =>
-        (Action<T>)__CombineMulticastDelegate(delegates);
+        delegates
+            .Map(CombineDelegates)
+            .ConvertTo<Action<T>>();
 
     public static Func<T, TResult> Combine<T, TResult>(IEnumerable<Func<T, TResult>> delegates) =>
-        (Func<T, TResult>)__CombineMulticastDelegate(delegates);
+        delegates
+            .Map(CombineDelegates)
+            .ConvertTo<Func<T, TResult>>();
 }
 
 [DebuggerNonUserCode]
@@ -77,3 +52,4 @@ public static class DelegateExtensions
             .Cast<Func<T, T>>()
             .Aggregate(input, (a, d) => d(a));
 }
+

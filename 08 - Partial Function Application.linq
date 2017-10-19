@@ -48,7 +48,8 @@ void Main()
             new Name("Jodie", "Whittaker")
         };
 
-    var filterNames = Filter(names);
+    Filter(names)(n => n.Last == "Baker").Dump();
 
+    var filterNames = Filter(names);
     filterNames(n => n.First == "Peter" && n.Last == "Capaldi").Dump();
 }
