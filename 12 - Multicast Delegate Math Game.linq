@@ -53,6 +53,13 @@ class GameResult
     public int Age { get; }
 }
 
+int GetYearAdjustment(DateTime today, DateTime birthdate) {
+	var hadBirthday =
+		today.CompareTo(new DateTime(today.Year, birthdate.Month, birthdate.Day)) >= 0;
+
+	return 1748 + (today.Year - 1998) - (hadBirthday ? 0 : -1);
+}
+
 GameResult Play(GameSetup setup) =>
     DelegateHelper
         .Combine(
@@ -61,8 +68,8 @@ GameResult Play(GameSetup setup) =>
                 x => x * 2,
                 x => x + 5,
                 x => x * 50,
-                x => x + ((DateTime.Now.Year - 251) + (DateTime.Now.Month <= setup.BirthDate.Month && DateTime.Now.Day <= setup.BirthDate.Day ? 1 : 0)),
-                x => x - setup.BirthDate.Year
+                x => x + GetYearAdjustment(DateTime.Now, setup.BirthDate),
+				x => x - setup.BirthDate.Year
             })
         .InvokeChain(setup.DaysOut)
         .Map(r => new GameResult(r));
