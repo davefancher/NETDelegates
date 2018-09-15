@@ -10,6 +10,16 @@ public static class FunctionalExtensions
         act(@this);
         return @this;
     }
+
+	public static TResult ConvertTo<TResult>(this object @this)
+	{
+		var convertible = @this as IConvertible;
+
+		return
+			convertible != null
+				? (TResult)convertible.ToType(typeof(TResult), null)
+				: (TResult)@this;
+	}
 }
 
 [DebuggerNonUserCode]
@@ -52,4 +62,3 @@ public static class DelegateExtensions
             .Cast<Func<T, T>>()
             .Aggregate(input, (a, d) => d(a));
 }
-

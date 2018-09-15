@@ -4,6 +4,5 @@
     .Split(' ')
     .Select(s => s.ToUpper())
     .OrderBy(s => s)
-    //.OrderBy(Operators.ID)
     .Where(s => s.Length >= 4)
     .Dump();

@@ -10,7 +10,9 @@ http://www.umassmed.edu/bsrc/tricks/#days1998
 2. Multiply this number by 2.
 3. Add 5.
 4. Multiply the new total by 50.
-5. In 1998, if you have already had your birthday this year, add 1748. If not, add 1747. In 1999, just add 1 to these two numbers (so add 1749 if you already had your birthday, and add 1748 if you haven't). In 2000, the number change to 1749 and 1748. And so on.
+5. In 1998, if you have already had your birthday this year, add 1748. If not, add 1747. In 1999,
+   just add 1 to these two numbers (so add 1749 if you already had your birthday, and add 1748 if
+   you haven't). In 2000, the number change to 1749 and 1748. And so on.
 6. Subtract the four digit year that you were born (19XX).
 
 ## Results:
@@ -59,7 +61,7 @@ GameResult Play(GameSetup setup) =>
                 x => x * 2,
                 x => x + 5,
                 x => x * 50,
-                x => x + ((DateTime.Now.Year - 250) + (DateTime.Now.Month <= setup.BirthDate.Month && DateTime.Now.Day <= setup.BirthDate.Day ? 1 : 0)),
+                x => x + ((DateTime.Now.Year - 251) + (DateTime.Now.Month <= setup.BirthDate.Month && DateTime.Now.Day <= setup.BirthDate.Day ? 1 : 0)),
                 x => x - setup.BirthDate.Year
             })
         .InvokeChain(setup.DaysOut)
