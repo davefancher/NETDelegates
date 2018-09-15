@@ -38,8 +38,8 @@ void Main()
                     })
             .Map(DelegateHelper.Combine)
             //.Tee(m => m.Dump("Multicast Delegate").GetInvocationList().Dump("Invocation List"))
-            //.Tee(d => d.Invoke(1).Dump("Invoke"))
-			//.Tee(d => d.InvokeAll(1).Dump("Invoke All"))
+            //.Tee(d => d.Invoke(1).Dump("Invoke (Only last result is returned)"))
+			//.Tee(d => d.InvokeAll(1).Dump("Invoke All (All results are returned!)"))
 			;
 
     range
